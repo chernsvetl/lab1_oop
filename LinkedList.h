@@ -3,7 +3,7 @@
 
 typedef int value_type;
 class LinkedList {
-    friend class iterator;
+    
     struct Node {
         value_type value;
         Node* prev;
@@ -20,7 +20,7 @@ class LinkedList {
 public:
 
     class iterator {
-        friend class LinkedList;
+        
         Node* curInList;
     public:
         iterator();
@@ -39,6 +39,8 @@ public:
         iterator operator--(int);
         iterator operator+(int shift);
         iterator operator-(int shift);
+
+        Node* getCurInList();
     };
     class const_iterator {
         Node* curInList;
@@ -57,6 +59,8 @@ public:
         const_iterator operator--(int);
         const_iterator operator+(int shift);
         const_iterator operator-(int shift);
+
+        Node* getCurInList();
     };
 
     LinkedList();
