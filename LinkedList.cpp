@@ -19,7 +19,9 @@ LinkedList::LinkedList(const LinkedList &other) {
     }
 }
 
-LinkedList::LinkedList(LinkedList &&other) noexcept {   //noexcept не генерирует исключений
+LinkedList::LinkedList(LinkedList &&other) noexcept {
+
+
     tail = other.tail;
     capacity = other.capacity;
 
@@ -28,6 +30,7 @@ LinkedList::LinkedList(LinkedList &&other) noexcept {   //noexcept не гене
 }
 
 LinkedList::~LinkedList() {
+
     clear();
     delete tail;
 }
@@ -42,6 +45,11 @@ LinkedList &LinkedList::operator=(const LinkedList &other) {
 }
 
 LinkedList &LinkedList::operator=(LinkedList &&other) {
+    if (*this == other) {
+        other.tail = nullptr;
+        other.capacity = 0;
+        return *this;
+    }
     clear();
     delete tail;
     tail = other.tail;
@@ -106,13 +114,17 @@ const value_type &LinkedList::back() const {
 }
 
 LinkedList::iterator LinkedList::erase(LinkedList::iterator position) {
-    Node* beforePos = (position - 1).curInList;
-    Node* afterPos = (position + 1).curInList;
+    if (position == end()) {
+        throw std::logic_error("Forbidden delete!");
+    }
+
+    Node* beforePos = (position - 1).getCurInList();
+    Node* afterPos = (position + 1).getCurInList();
 
     beforePos -> next = afterPos;
     afterPos -> prev = beforePos;
 
-    delete position.curInList;
+    delete position.getCurInList();
     return LinkedList::iterator(beforePos);
 }
 
@@ -178,8 +190,8 @@ void LinkedList::push_front(const value_type &value) {
 }
 
 LinkedList::iterator LinkedList::insert(LinkedList::iterator before, const value_type &value) {
-    Node* last = (before - 1).curInList;
-    Node* after = before.curInList;
+    Node* last = (before - 1).getCurInList();
+    Node* after = before.getCurInList();
 
     Node* toInsert = new Node(value, last, after);
 
@@ -214,5 +226,15 @@ bool operator==(const LinkedList &left, const LinkedList &right) {
     return !(iterator1 != left.cend() || iterator2 != right.cend());
 }
 
+LinkedList operator+(const LinkedList &left, const LinkedList &right) {
+    LinkedList newList;
+    for (LinkedList::const_iterator it = left.cbegin(); it != left.cend(); ++it) {
+        newList.push_back(*it);
+    }
 
+    for (LinkedList::const_iterator it = right.cbegin(); it != right.cend(); ++it) {
+        newList.push_back(*it);
+    }
 
+    return newList;
+}
