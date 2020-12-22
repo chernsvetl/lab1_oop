@@ -67,3 +67,7 @@ LinkedList::const_iterator LinkedList::const_iterator::operator-(int shift) {
     return it;
 }
 
+LinkedList::Node *LinkedList::const_iterator::getCurInList() {
+    return curInList;
+}
+
