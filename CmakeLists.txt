@@ -1,9 +1,0 @@
-cmake_minimum_required(VERSION 3.15)
-project(lab1)
-
-set(CMAKE_CXX_STANDARD 14)
-add_subdirectory(lib/googletest)
-include_directories(lib/googletest/googletest/include)
-include_directories(lib/googletest/googlemock/include)
-add_executable(lab1 main.cpp Tests/LinkedList.h Tests/Node.cpp Tests/Iterator.cpp Tests/LinkedList.cpp Tests/IteratorConst.cpp Tests/Test.cpp)
-target_link_libraries(lab1 gtest gtest_main)
